@@ -10,11 +10,6 @@ resource "azurerm_kubernetes_cluster" "sandbox-cluster" {
     node_count = 1
     vm_size    = "Standard_D2_v2"
   }
-
-  service_principal {
-    client_id     = azuread_service_principal.aks-sandbox.application_id
-    client_secret = random_password.aks-sandbox-sp-password.result
-  }
 }
 
 output "client_certificate" {
