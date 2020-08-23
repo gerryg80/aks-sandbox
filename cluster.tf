@@ -10,6 +10,21 @@ resource "azurerm_kubernetes_cluster" "sandbox-cluster" {
     node_count = 1
     vm_size    = "Standard_D2_v2"
   }
+
+  identity {
+    type = "SystemAssigned"
+  }
+}
+
+resource "azurerm_kubernetes_cluster_node_pool" "windows_pool" {
+  kubernetes_cluster_id = azurerm_kubernetes_cluster.sandbox-cluster.id
+  name = "windows_pool"
+  node_count = 1
+  vm_size = "Standard_D4_v3"
+  os_type = "Windows"
+  node_taints = [
+    "kubernetes.io/os=windows:NoSchedule"
+  ]
 }
 
 output "client_certificate" {
