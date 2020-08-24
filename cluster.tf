@@ -5,23 +5,34 @@ resource "azurerm_kubernetes_cluster" "sandbox-cluster" {
   resource_group_name = azurerm_resource_group.aks-sandbox.name
   dns_prefix          = "sandbox-cluster"
 
+  network_profile {
+    network_plugin      = "azure"
+  }
+
   default_node_pool {
     name       = "default"
     node_count = 1
     vm_size    = "Standard_D2_v2"
+    vnet_subnet_id = azurerm_subnet.sandbox_subnet.id
   }
 
   identity {
     type = "SystemAssigned"
   }
+
+  windows_profile {
+    admin_username = "mbsadmin"
+    admin_password = "LexisNexis2020"
+  }
 }
 
 resource "azurerm_kubernetes_cluster_node_pool" "windows_pool" {
   kubernetes_cluster_id = azurerm_kubernetes_cluster.sandbox-cluster.id
-  name = "windows_pool"
+  name = "pool2" # name limited to six lowercase alpha numeric characters? (wtf...)
   node_count = 1
   vm_size = "Standard_D4_v3"
   os_type = "Windows"
+  vnet_subnet_id = azurerm_subnet.sandbox_subnet.id
   node_taints = [
     "kubernetes.io/os=windows:NoSchedule"
   ]
