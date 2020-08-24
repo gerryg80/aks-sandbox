@@ -2,15 +2,15 @@ resource "azurerm_virtual_network" "sandbox_vnet" {
   name = "sandboxVirtualNetwork"
   location            = var.location
   resource_group_name = azurerm_resource_group.aks-sandbox.name
-  address_space       = ["10.192.0.0/16"]
-  dns_servers         = ["10.192.0.4","10.192.0.5"]
+  address_space       = ["10.192.0.0/14"]
+#  dns_servers         = ["10.192.0.4","10.192.0.5"]
 }
 
 resource "azurerm_subnet" "sandbox_subnet" {
   name                 = "AzureFirewallSubnet"
   resource_group_name  = azurerm_resource_group.aks-sandbox.name
   virtual_network_name = azurerm_virtual_network.sandbox_vnet.name
-  address_prefixes     = ["10.192.1.0/24"]
+  address_prefixes     = ["10.193.0.0/16"]
 }
 
 resource "azurerm_public_ip" "sandbox_pip" {
@@ -41,18 +41,18 @@ resource "azurerm_firewall_network_rule_collection" "sandbox_rules" {
   action              = "Allow"
 
   rule {
-    name = "udpout"
-    source_addresses = ["10.192.1.0/24"]
-    destination_ports = ["1194", "123", "53"]
+    name                  = "udpout"
+    source_addresses      = ["10.193.0.0/16"]
+    destination_ports     = ["1194", "123", "53"]
     destination_addresses = ["0.0.0.0/0"]
-    protocols = ["UDP"]
+    protocols             = ["UDP"]
   }
 
   rule {
-    name = "tcpout"
-    source_addresses = ["10.192.1.0/24"]
-    destination_ports = ["80", "443", "9000"]
+    name                  = "tcpout"
+    source_addresses      = ["10.193.0.0/16"]
+    destination_ports     = ["80", "443", "9000"]
     destination_addresses = ["0.0.0.0/0"]
-    protocols = ["TCP"]
+    protocols             = ["TCP"]
   }
 }
