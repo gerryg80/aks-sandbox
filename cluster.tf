@@ -26,7 +26,7 @@ resource "azurerm_kubernetes_cluster" "sandbox-cluster" {
 
   windows_profile {
     admin_username = "mbsadmin"
-    admin_password = "LexisNexis2020!"
+    admin_password = var.admin_password
   }
 }
 
