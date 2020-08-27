@@ -9,7 +9,7 @@ resource "random_string" "random-name" {
 resource "azurerm_container_registry" "acr" {
   name                     = "akssandbox${random_string.random-name.result}"
   resource_group_name      = azurerm_resource_group.aks-sandbox.name
-  location                 = azurerm_resource_group.aks-sandbox.location
+  location                 = var.location
   sku                      = "Standard"
-  admin_enabled            = false
+  admin_enabled            = true
 }

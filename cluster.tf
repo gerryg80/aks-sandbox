@@ -31,12 +31,14 @@ resource "azurerm_kubernetes_cluster" "sandbox-cluster" {
 }
 
 resource "azurerm_kubernetes_cluster_node_pool" "windows_pool" {
+
   kubernetes_cluster_id = azurerm_kubernetes_cluster.sandbox-cluster.id
-  name = "pool2" # name limited to six lowercase alpha numeric characters? (wtf...)
+  name = "pool2"
   node_count = 1
   vm_size = "Standard_D4_v3"
   os_type = "Windows"
   vnet_subnet_id = azurerm_subnet.sandbox_subnet.id
+
   node_taints = [
     "kubernetes.io/os=windows:NoSchedule"
   ]
