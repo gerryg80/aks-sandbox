@@ -4,6 +4,7 @@ resource "azurerm_kubernetes_cluster" "sandbox-cluster" {
   location            = azurerm_resource_group.aks-sandbox.location
   resource_group_name = azurerm_resource_group.aks-sandbox.name
   dns_prefix          = "sandbox-cluster"
+  kubernetes_version  = "1.17.9"
 
   network_profile {
     network_plugin     = "azure"
@@ -25,7 +26,7 @@ resource "azurerm_kubernetes_cluster" "sandbox-cluster" {
 
   windows_profile {
     admin_username = "mbsadmin"
-    admin_password = "LexisNexis2020"
+    admin_password = "LexisNexis2020!"
   }
 }
 
