@@ -41,9 +41,6 @@ resource "azurerm_kubernetes_cluster_node_pool" "windows_pool" {
   os_type = "Windows"
   vnet_subnet_id = azurerm_subnet.sandbox_subnet.id
 
-  node_taints = [
-    "kubernetes.io/os=windows:NoSchedule"
-  ]
 }
 
 output "client_certificate" {
