@@ -20,10 +20,6 @@ resource "azurerm_kubernetes_cluster" "sandbox-cluster" {
     vnet_subnet_id = azurerm_subnet.sandbox_subnet.id
   }
 
-  identity {
-    type = "SystemAssigned"
-  }
-
   windows_profile {
     admin_username = "mbsadmin"
     admin_password = var.admin_password
