@@ -28,6 +28,12 @@ resource "azurerm_kubernetes_cluster" "sandbox-cluster" {
     admin_username = "mbsadmin"
     admin_password = var.admin_password
   }
+
+  service_principal {
+    client_id     = azuread_service_principal.aks-sandbox.application_id
+    client_secret = random_password.aks-sandbox-sp-password.result
+  }
+
 }
 
 resource "azurerm_kubernetes_cluster_node_pool" "windows_pool" {
