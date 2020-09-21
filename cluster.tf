@@ -4,7 +4,7 @@ resource "azurerm_kubernetes_cluster" "sandbox-cluster" {
   location            = azurerm_resource_group.aks-sandbox.location
   resource_group_name = azurerm_resource_group.aks-sandbox.name
   dns_prefix          = "sandbox-cluster"
-  kubernetes_version  = "1.17.9"
+  kubernetes_version  = "1.18.8"
 
   network_profile {
     network_plugin     = "azure"
@@ -30,6 +30,12 @@ resource "azurerm_kubernetes_cluster" "sandbox-cluster" {
     client_secret = random_password.aks-sandbox-sp-password.result
   }
 
+}
+
+resource "azurerm_role_assignment" "aks_sp_container_registry" {
+  scope                = azurerm_container_registry.acr.id
+  role_definition_name = "AcrPull"
+  principal_id         = azuread_service_principal.aks-sandbox.object_id
 }
 
 resource "azurerm_kubernetes_cluster_node_pool" "windows_pool" {
