@@ -1,5 +1,5 @@
 resource "azurerm_storage_account" "pod-storage-account" {
-  name                     = "pod-storage-account"
+  name                     = "podstorage${random_string.random-name.result}"
   resource_group_name      = azurerm_resource_group.aks-sandbox.name
   location                 = azurerm_resource_group.aks-sandbox.location
   account_tier             = "Standard"
