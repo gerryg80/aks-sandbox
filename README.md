@@ -6,9 +6,12 @@ The Azure CNI requires creating a virtual network and subnet along with the clus
 
 This includes a proof of concept demonstrating a "shim" container that launches an app from a Azure Files Share using only the base Windows Aspnet Container
 
+Note the scripts in here make a lot of assumptions about installed tools such as "jq" the Azure CLI (az) Powershell etc. This is not a bullet proof script or even a recipe but more of a rough documentation of the steps so I can repeat it myself.  Use with caution
+
 ## Steps
 
 1. Use Terraform to create cluster
+1. get credentials on the new cluster so you can use kubectl going forward
 1. execute the "create-storage-secret.sh" from this project to create the secret that enables kubernetes to access the storage account created in terraform
 1. Build / Publish the companion "Freds" project
 1. Use the Copy-ToAzure.ps1 powershell script in Freds/Freds to initialize the share on the storage account
