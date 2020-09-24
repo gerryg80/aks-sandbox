@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: freds
+  labels:
+    app: freds
+spec:
+  replicas: 1
+  template:
+    metadata:
+      name: freds
+      labels:
+        app: freds
+    spec:
+      nodeSelector:
+        "beta.kubernetes.io/os": windows
+      containers:
+      - name: freds
+        image: mcr.microsoft.com/dotnet/framework/aspnet:4.8-windowsservercore-ltsc2019 
+        resources:
+          limits:
+            cpu: 1
+            memory: 800M
+          requests:
+            cpu: .1
+            memory: 300M
+        ports:
+          - containerPort: 80
+        volumeMounts:
+          - name: pod-storage
+            mountPath: "c:\\InetPub\\wwwroot"
+      volumes:
+        - name: pod-storage
+          azureFile:
+            secretName: pod-storage
+            shareName: pod-storage
+            readOnly: false
+  selector:
+    matchLabels:
+      app: freds
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: freds
+spec:
+  type: LoadBalancer
+  ports:
+  - protocol: TCP
+    port: 80
+  selector:
+    app: freds
