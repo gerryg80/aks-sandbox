@@ -18,6 +18,12 @@ resource "random_string" "random-name" {
   special = false
 }
 
+# creates random password for admin account
+resource "random_password" "admin" {
+  length      = 12
+  special     = true
+}
+
 module "subscription" {
   source = "github.com/Azure-Terraform/terraform-azurerm-subscription-data.git?ref=v1.0.0"
   subscription_id = var.subscription_id
@@ -73,7 +79,7 @@ module "virtual_network" {
 }
 
 module "kubernetes" {
-  source = "github.com/Azure-Terraform/terraform-azurerm-kubernetes.git?ref=v1.5.0"
+  source = "github.com/Azure-Terraform/terraform-azurerm-kubernetes.git?ref=v1.5.1"
 
   kubernetes_version = "1.18.8"
   
@@ -101,7 +107,7 @@ module "kubernetes" {
   enable_windows_node_pools = true
 
   windows_profile_admin_username = "mbsadmin"
-  windows_profile_admin_password = var.admin_password
+  windows_profile_admin_password = random_password.admin.result
 
   use_service_principal = true
 
